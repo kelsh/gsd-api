@@ -21,16 +21,12 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET users listing. */
-router.get('/', async (req, res, next)  => {
-	console.log('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqq')
-	req.connection.on('close',function(){
-	  // code to handle connection abort
-	  console.log('user cancelled');
-	});
+router.get('/:userid', async (req, res, next)  => {
 
+	let userid =  req.params.userid
 	try{
 		let dbConnection = new DB;
-		let queryTasks = await dbConnection.getTasks();
+		let queryTasks = await dbConnection.getTasksByUserID(userid);
 
 		res.json(queryTasks);
 	}
@@ -40,7 +36,28 @@ router.get('/', async (req, res, next)  => {
 		res.json('fail');
 	}
 
+	next();
+});
 
+/* create new task for user. */
+router.post('/:userid', async (req, res, next)  => {
+
+	console.log('attempting to post with body params: ', req.body)
+	let userid =  req.params.userid
+	try{
+		let dbConnection = new DB;
+		let newTask = req.body;
+		let queryTasks = await dbConnection.createNewTask(userid, newTask);
+
+		res.status(200);
+	}
+
+	catch(e){
+		console.log('error in getting tasks', e)
+		res.json('fail');
+	}
+
+	next();
 });
 
 module.exports = router;

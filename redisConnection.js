@@ -20,7 +20,6 @@ redisClient.on("connect", function () {
 redisClient.on("ready", function () {
 
     let keys = redisClient.keys("*", (err, res)=>{
-    	console.log("Redis is  ready ", res);
 
     	res.forEach( (key)=>{
     		let value = redisClient.get(key,  (err, res)=>{

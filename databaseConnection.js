@@ -30,13 +30,13 @@ class DB {
 		})
 	}
 
-	async getTasks(){
+	async getTasksByUserID(userid){
 
 		let connection = await this.connect().then( db => {return db}, err => {console.log('got an err in connecting to db when getting tasks', err)} )
 		let thisDB = connection.db(fakeConfig.dbName)
 		let tasks = thisDB.collection('tasks');
 
-		let allTasks = await tasks.find({}).toArray();
+		let allTasks = await tasks.find({'userid': userid}).toArray();
 		return allTasks
 	}
 
@@ -54,7 +54,7 @@ class DB {
 
 	async getUserById(userID){
 
-		let connection = await this.connect().then( db => {return db}, err => {console.log('got an err in connecting to db when validating username and pass', err)} )
+		let connection = await this.connect().then( db => {return db}, err => {console.log('got an err in connecting to db when getting user by id', err)} )
 		let thisDB = connection.db(fakeConfig.dbName)
 		let users = thisDB.collection('users');
 
@@ -62,6 +62,23 @@ class DB {
 
 		console.log('[inside of db connection, getting user by id] returning user by userid', user)
 		return user
+	}
+
+	async createNewTask(userid, task){
+
+		let connection = await this.connect().then( db => {return db}, err => {console.log('got an err in connecting to db when adding a task', err)} )
+		let thisDB = connection.db(fakeConfig.dbName);
+		let tasks = thisDB.collection('tasks');
+
+		let newtask = {...task};
+
+		newtask.userid = userid
+
+		console.log('ddddddddddddd', newtask)
+
+		let insert = await tasks.insertOne(newtask, { w: 1});
+
+		return true;
 	}
 }
 
