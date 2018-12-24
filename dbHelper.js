@@ -47,7 +47,7 @@ class DB {
 		let connection = await this.connect().then( db => {return db}, err => {console.log('got an err in connecting to db when validating username and pass', err)} )
 		let thisDB = connection.db(fakeConfig.dbName)
 		let users = thisDB.collection('users');
-		console.log('getting user by  username and pass: ', username, password)
+
 		let user = await users.findOne({username: username, password: password})
 		return user
 	}
@@ -60,7 +60,6 @@ class DB {
 
 		let user = await users.findOne({'userid': userID});
 
-		console.log('[inside of db connection, getting user by id] returning user by userid', user)
 		return user
 	}
 
@@ -73,8 +72,6 @@ class DB {
 		let newtask = {...task};
 
 		newtask.userid = userid
-
-		console.log('ddddddddddddd', newtask)
 
 		let insert = await tasks.insertOne(newtask, { w: 1});
 

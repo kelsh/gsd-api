@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var DB = require(path.resolve( './databaseConnection.js') );
+var DB = require(path.resolve( './dbHelper.js') );
 
 const AuthHelper = require(path.resolve("./lib/authHelper.js"));
 const authHelper = new AuthHelper();
