@@ -50,14 +50,46 @@ router.post('/:userid', async (req, res, next)  => {
 		let queryTasks = await dbConnection.createNewTask(userid, newTask);
 
 		res.status(200);
+		res.json(newTask)
+		res.end();
 	}
 
 	catch(e){
 		console.log('error in getting tasks', e)
 		res.json('fail');
+		res.end();
 	}
 
 	next();
 });
+
+/* create new task for user. */
+router.delete('/:userid/:taskid', async (req, res, next)  => {
+
+	console.log('attempting to delete with body params: ', req.params)
+	let userid =  req.params.userid
+	let taskid =  parseInt(req.params.taskid)
+
+	try{
+		let dbConnection = new DB;
+		let newTask = req.body;
+		let udpateTask = await dbConnection.trashTaskById(userid, taskid);
+		console.log('this is my updated task: ', udpateTask)
+		if(udpateTask){
+			res.status(200);
+			res.json(udpateTask)
+			res.end();
+		}
+	}
+
+	catch(e){
+		console.log('error in getting tasks', e)
+		res.json('fail');
+		res.end();
+	}
+
+	next();
+});
+
 
 module.exports = router;

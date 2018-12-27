@@ -20,10 +20,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next) {
 //TODO lol don't leave this
   res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
   res.header("Access-Control-Allow-Headers", "Origin, password, username, sessionToken, X-Requested-With, Content-Type, Accept");
   if ('OPTIONS' === req.method) {
       //respond with 200
       res.send(200);
+      res.end();
     }
     else {
     //move on

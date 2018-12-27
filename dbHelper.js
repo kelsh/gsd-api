@@ -75,7 +75,16 @@ class DB {
 
 		let insert = await tasks.insertOne(newtask, { w: 1});
 
-		return true;
+		return insert;
+	}
+
+	async trashTaskById(userid, taskid){
+		let connection = await this.connect().then( db => {return db}, err => {console.log('got an err in connecting to db when adding a task', err)} )
+		let thisDB = connection.db(fakeConfig.dbName);
+		let tasks = thisDB.collection('tasks');
+		console.log('args: ', userid, taskid)
+		let insert = await tasks.findOneAndUpdate( {userid: userid, id:taskid}, { $set: { trashed: true } }, {upsert: false, returnNewDocument:true} );
+		return insert.value;
 	}
 }
 
