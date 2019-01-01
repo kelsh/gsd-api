@@ -11,6 +11,35 @@ class DB {
 
 		this.connection = null;
 
+		this.allowedUpdateFields = ["complete",
+			"trashed",
+			"desciption",
+			"userDefinedName",
+			"userDefinedCompletionDate",
+			'subtasks',
+			'options',
+			'topic'
+		]
+	}
+
+	//if the user wants to update a task, make sure they
+	//only update an allowed fields.
+	//takes an object that represents changes to be made to the task in the db
+	//returns to the caller an object with just the allowed fields
+	getUpdateAllowedFields(task){
+
+		let updatedObj = {}
+		let taskKeys= Object.keys(task);
+
+		taskKeys.forEach((key)=>{
+
+			if( this.allowedUpdateFields.includes(key) ){
+				updatedObj[key] = task[key]
+			}
+
+		});
+
+		return updatedObj
 	}
 
 	connect(config){
@@ -85,6 +114,19 @@ class DB {
 		console.log('args: ', userid, taskid)
 		let insert = await tasks.findOneAndUpdate( {userid: userid, id:taskid}, { $set: { trashed: true } }, {upsert: false, returnNewDocument:true} );
 		return insert.value;
+	}
+
+	async updateTaskById(userid, taskid, task){
+		console.log('updating task with: ', this.getUpdateAllowedFields(task));
+		let connection = await this.connect().then( db => {return db}, err => {console.log('got an err in connecting to db when adding a task', err)} )
+		let thisDB = connection.db(fakeConfig.dbName);
+		let tasks = thisDB.collection('tasks');
+
+
+		console.log('args: ', userid, taskid)
+		let insert = await tasks.findOneAndUpdate( {userid: userid, id:taskid}, { $set: this.getUpdateAllowedFields(task) }, {upsert: false, returnNewDocument:true} );
+		return insert.value;
+
 	}
 }
 

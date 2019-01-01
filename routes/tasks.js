@@ -33,7 +33,34 @@ router.get('/:userid', async (req, res, next)  => {
 
 	catch(e){
 		console.log('error in getting tasks', e)
+		res.json('lol thats not you');
+	}
+
+	next();
+});
+
+/* update task with put. */
+router.put('/:userid/:taskid', async (req, res, next)  => {
+
+	console.log('attempting to put with body params: ', req.body, req.body.task);
+
+	let userid =  req.params.userid;
+	let taskid = req.params.taskid;
+
+	try{
+		let dbConnection = new DB;
+		let newTask = req.body.task;
+		let queryTasks = await dbConnection.updateTaskById(userid, taskid , newTask);
+
+		res.status(200);
+		res.json(newTask)
+		res.end();
+	}
+
+	catch(e){
+		console.log('error in getting tasks', e)
 		res.json('fail');
+		res.end();
 	}
 
 	next();
