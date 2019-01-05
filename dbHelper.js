@@ -11,7 +11,8 @@ class DB {
 
 		this.connection = null;
 
-		this.allowedUpdateFields = ["complete",
+		this.allowedUpdateFields = [
+			"completed",
 			"trashed",
 			"desciption",
 			"userDefinedName",
@@ -117,13 +118,13 @@ class DB {
 	}
 
 	async updateTaskById(userid, taskid, task){
+
 		console.log('updating task with: ', this.getUpdateAllowedFields(task));
+
 		let connection = await this.connect().then( db => {return db}, err => {console.log('got an err in connecting to db when adding a task', err)} )
 		let thisDB = connection.db(fakeConfig.dbName);
 		let tasks = thisDB.collection('tasks');
 
-
-		console.log('args: ', userid, taskid)
 		let insert = await tasks.findOneAndUpdate( {userid: userid, id:taskid}, { $set: this.getUpdateAllowedFields(task) }, {upsert: false, returnNewDocument:true} );
 		return insert.value;
 

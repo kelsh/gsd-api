@@ -24,7 +24,7 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, password, username, sessionToken, X-Requested-With, Content-Type, Accept");
   if ('OPTIONS' === req.method) {
       //respond with 200
-      res.send(200);
+      res.sendStatus(200);
       res.end();
     }
     else {
@@ -50,11 +50,12 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};*/
 
   // render the error page
-
+  	res.sendStatus(404)
 	res.json({
 	  message: err.message,
 	  error: err
 	});
+	res.end();
 });
 
 app.listen(port);

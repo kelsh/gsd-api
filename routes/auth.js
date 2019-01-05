@@ -15,7 +15,9 @@ router.get('/', function(req, res, next) {
 			res.json(validUser);
 		}
 		else{
-			res.json('nah')
+			console.log("what the fuck", validUser)
+			res.json('nah dduuuuuuudeee           '+validUser)
+			res.end();
 		}
 	});
 

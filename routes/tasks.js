@@ -6,15 +6,18 @@ var DB = require(path.resolve( './dbHelper.js') );
 const AuthHelper = require(path.resolve("./lib/authHelper.js"));
 const authHelper = new AuthHelper();
 
-router.get('/', function(req, res, next) {
+router.use('/', function(req, res, next) {
 
 	authHelper.auth(req).then((validUser)=>{
 
 		if(validUser){
+			console.log("we have a valid user in tasks, "+validUser)
 			next();
 		}
 		else{
+			console.log("tasks nah bro       " +validUser)
 			res.json('nah')
+			res.end();
 		}
 	});
 
@@ -44,8 +47,8 @@ router.put('/:userid/:taskid', async (req, res, next)  => {
 
 	console.log('attempting to put with body params: ', req.body, req.body.task);
 
-	let userid =  req.params.userid;
-	let taskid = req.params.taskid;
+	let userid =  req.params.userid.toString();
+	let taskid = parseInt(req.params.taskid);
 
 	try{
 		let dbConnection = new DB;
