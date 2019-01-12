@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var DB = require(path.resolve( './dbHelper.js') );
+var DB = require(path.resolve( './lib/mongo/mongoHelper.js') );
 
-const AuthHelper = require(path.resolve("./lib/authHelper.js"));
+const AuthHelper = require(path.resolve("./lib/auth/authHelper.js"));
 const authHelper = new AuthHelper();
 
 router.use('/', function(req, res, next) {

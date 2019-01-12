@@ -1,0 +1,33 @@
+
+Tonight:
+- Styling???
+- we have to fix it so adding tasks is confirmed by the api and added to the store.
+- Start putting in some model validation for tasks (lol not this one, this one is boring)
+
+Look into swapping out session tokens
+with jwts.
+
+what do we need our api to do?
+-auth (mongo for username/pass, redis for session)
+-return tasks
+-save tasks
+-validate
+
+basic stuff all apis should do
+-restart itself
+-log errors
+-return proper message to client.
+
+Don't need realtime, DO need database, will need a queue system at some point.  Needs to interact with
+outside apis.
+
+gonna do node/mongo because its easy.  I'd love to avoid express just because its too big.
+lol express sucks don't use it in production.
+
+authentication problems:
+many routes need to take userid as a parameter.  Should draw a distinction between routes that perform
+action on a user and routes that don't (? what routes don't need a user? tasks for groups?)
+
+bad architecture:
+things kind of randomly instantiate their own db connections, all this should be sorted.
+Make my db helper class have a single instantiated instance but also have a method to create new instances.  This pattern should be used for all outside services.

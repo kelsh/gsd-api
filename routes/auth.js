@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 
-const AuthHelper = require(path.resolve("./lib/authHelper.js"));
+const AuthHelper = require(path.resolve("./lib/auth/authHelper.js"));
 const authHelper = new AuthHelper()
 
 
