@@ -28,7 +28,7 @@ router.get('/:userid', async (req, res, next)  => {
 
 	let userid =  req.params.userid
 	try{
-		let dbConnection = new DB;
+		let dbConnection = new DB();
 		let queryTasks = await dbConnection.getTasksByUserID(userid);
 
 		res.json(queryTasks);
